@@ -157,25 +157,6 @@ public class GameManagerScript : MonoBehaviour {
 			moveCommandoDist = Mathf.Abs(moveCommandoDestinationY-toMoveCommando.transform.position.y);
 			moveCommando = true;
 		}
-
-
-
-		// colision
-		foreach (GameObject commando in commandos)
-			foreach (List<GameObject> obsList in obstacles)
-				foreach (GameObject obs in obsList)
-				{
-					if ( obs.GetComponent<Collider>().bounds.Intersects(commando.GetComponent<Collider>().bounds) )
-					{
-						// game over // TODO: what do we do now?
-						// pause
-						Time.timeScale = 0;
-						print ("score:"+distanceTraveled);
-						// TODO: show score
-						//GameObject.Find("GameOverMessage").transform.position = new Vector3(0,0,10);
-						gameOverCanvasRef.SetActive(true);
-					}
-				}
 	}
 
 	private Vector3 move(Vector3 currentPosition, Vector3 dest, float distanceToMove)
@@ -246,6 +227,14 @@ public class GameManagerScript : MonoBehaviour {
 				GameObject tempObs = (GameObject)Instantiate (Prefab_obs_indest, new Vector3 (1200, y, 0), transform.rotation);
 				currentList.Add (tempObs);
 		}
+	}
+
+	public void gameOver()
+	{
+		Time.timeScale = 0;
+		print ("score:"+distanceTraveled);
+		// TODO: show score
+		gameOverCanvasRef.SetActive(true);
 	}
 
 	public void restartGame()
