@@ -39,6 +39,7 @@ public class GameManagerScript : MonoBehaviour {
 	public GUIStyle scoreStyle;
 
 	private GameObject gameOverCanvasRef;
+	public GameObject scoreText;
 
 	// Use this for initialization
 	void Start ()
@@ -61,13 +62,6 @@ public class GameManagerScript : MonoBehaviour {
 
 		gameOverCanvasRef = GameObject.Find ("GameOverCanvas");
 		gameOverCanvasRef.SetActive (false);
-	}
-
-	void OnGUI ()
-	{
-		// Make a background box
-		GUI.Label(new Rect(1024-150,15,150,Screen.height), "score: "+Mathf.FloorToInt(distanceTraveled/100),scoreStyle);
-
 	}
 
 	// Update is called once per frame
@@ -157,6 +151,9 @@ public class GameManagerScript : MonoBehaviour {
 			moveCommandoDist = Mathf.Abs(moveCommandoDestinationY-toMoveCommando.transform.position.y);
 			moveCommando = true;
 		}
+
+		//update score
+		scoreText.GetComponent<UnityEngine.UI.Text>().text = "score: "+Mathf.FloorToInt(distanceTraveled/100);
 	}
 
 	private Vector3 move(Vector3 currentPosition, Vector3 dest, float distanceToMove)
