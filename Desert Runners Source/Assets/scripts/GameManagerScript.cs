@@ -31,6 +31,7 @@ public class GameManagerScript : MonoBehaviour {
 	private float moveCommandoDestinationY;
 	private float swapCommandoDestinationY;
 	private float moveCommandoDist;
+	private GameObject movingCommandoShadow;
 
 	private float distanceTraveled = 0;
 
@@ -40,6 +41,10 @@ public class GameManagerScript : MonoBehaviour {
 
 	private GameObject gameOverCanvasRef;
 	public GameObject scoreText;
+	public GameObject selectedCommandoGlyphRef;
+	public GameObject selectedLaneHightlightRef;
+
+	private bool dragStarted;
 
 	// Use this for initialization
 	void Start ()
@@ -62,6 +67,14 @@ public class GameManagerScript : MonoBehaviour {
 
 		gameOverCanvasRef = GameObject.Find ("GameOverCanvas");
 		gameOverCanvasRef.SetActive (false);
+		
+		selectedCommandoGlyphRef.transform.position = new Vector3(-400, 0, 0);
+		moveItemToLane(selectedCommandoGlyphRef, -1);
+		
+		selectedLaneHightlightRef.transform.position = new Vector3(0, 0, 0);
+		moveItemToLane(selectedLaneHightlightRef, -1);
+
+		dragStarted = false;
 	}
 
 	// Update is called once per frame
@@ -135,13 +148,27 @@ public class GameManagerScript : MonoBehaviour {
 			int laneNum = findLaneNum(convertedMouse.y);
 			//prtoMoveCommando			
 			toMoveCommando = getCommandoInLane(laneNum);
-			//print("toMoveCommando:"+toMoveCommando.name);
+			if(toMoveCommando != null)
+			{
+				moveItemToLane(selectedCommandoGlyphRef, laneNum);
+				dragStarted = true;
+
+				movingCommandoShadow = createCommandoShadow(toMoveCommando);
+			}
 		}
 		else if (toMoveCommando != null && Input.GetMouseButtonUp (0))
 		{
 			// find lane
 			Vector3 convertedMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			int laneNum = findLaneNum(convertedMouse.y);
+			
+			if(dragStarted)
+			{
+				dragStarted = false;
+				moveItemToLane(selectedLaneHightlightRef, -1);
+				Destroy(movingCommandoShadow);
+			}
+
 			if ( laneNum == -1 )
 				return;
 
@@ -150,10 +177,26 @@ public class GameManagerScript : MonoBehaviour {
 			swapCommandoDestinationY = toMoveCommando.transform.position.y;
 			moveCommandoDist = Mathf.Abs(moveCommandoDestinationY-toMoveCommando.transform.position.y);
 			moveCommando = true;
+			
+			moveItemToLane(selectedCommandoGlyphRef, -1);
+			GameObject.Find("MoveCommandoSound").GetComponent<AudioSource>().Play();
+		}
+
+		if(dragStarted)
+		{
+			//update lane hightlght
+			Vector3 currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			int currentLaneNum = findLaneNum(currentMousePos.y);
+			moveItemToLane(selectedLaneHightlightRef, currentLaneNum);
+
+			movingCommandoShadow.transform.position = new Vector3(-300, currentMousePos.y, 0);
 		}
 
 		//update score
 		scoreText.GetComponent<UnityEngine.UI.Text>().text = "score: "+Mathf.FloorToInt(distanceTraveled/100);
+
+		if(Input.GetKeyDown(KeyCode.Escape))
+			Application.LoadLevel("homeScene");
 	}
 
 	private Vector3 move(Vector3 currentPosition, Vector3 dest, float distanceToMove)
@@ -186,6 +229,7 @@ public class GameManagerScript : MonoBehaviour {
 								return commando;
 		return null;
 	}
+
 	private void generateObstacles()
 	{
 		// check to generate or not
@@ -200,7 +244,7 @@ public class GameManagerScript : MonoBehaviour {
 				else if (lastObstacleIndexGenerated < 30)
 						OBSTACLE_COUNT = 3;
 
-		SPEED += 20;
+		SPEED += 10;
 		print ("SPEED:"+SPEED);
 		// generate
 		List<GameObject> currentList = new List<GameObject> ();
@@ -242,5 +286,30 @@ public class GameManagerScript : MonoBehaviour {
 	public void loadHome()
 	{
 		Application.LoadLevel ("homeScene");
+	}
+
+	private void moveItemToLane(GameObject item, int laneNum)
+	{
+		if(laneNum < 0)
+		{
+			item.SetActive(false);
+			return;
+		}
+
+		item.SetActive(true);
+		Vector3 oldPos = item.transform.position;
+		item.transform.position = new Vector3(oldPos.x, getLaneCenterY(laneNum), oldPos.z);
+	}
+
+	private GameObject createCommandoShadow(GameObject commando)
+	{
+		GameObject shadow = (GameObject)Instantiate(commando);
+		Color oldColor = shadow.GetComponent<SpriteRenderer>().color;
+		shadow.GetComponent<SpriteRenderer>().color = new Color(oldColor.r, oldColor.g, oldColor.b, 0.5f);
+		Destroy(shadow.GetComponent<BoxCollider2D>());
+		Destroy(shadow.GetComponent<Animator>());
+		Destroy(shadow.GetComponent<Commando>());
+
+		return shadow;
 	}
 }
