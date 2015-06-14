@@ -10,7 +10,6 @@ public class Commando : MonoBehaviour
     {
         if (movementParams.isMoving)
         {
-            print("commando update");
             float distCovered = (Time.time - movementParams.startTime) * MovementParams.SPEED;
             float fracJourney = distCovered / movementParams.JourneyLength;
             transform.position = Vector3.Lerp(movementParams.startPos, movementParams.endPos, fracJourney);
@@ -35,8 +34,6 @@ public class Commando : MonoBehaviour
         movementParams.startTime = Time.time;
         GameObject.Find("MoveCommandoSound").GetComponent<AudioSource>().Play();
         movementParams.isMoving = true;
-        
-        print(string.Format("Request to move commando {0} from {1} to {2}", this.name, movementParams.startPos, movementParams.endPos));
     }
     
     private struct MovementParams
