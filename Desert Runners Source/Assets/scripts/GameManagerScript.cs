@@ -6,7 +6,7 @@ public class GameManagerScript : MonoBehaviour
 {
 
 
-    private float COMMANDO_SPEED = 2000; //drag/swap
+    //private float COMMANDO_SPEED = 2000; //drag/swap
 
     private float SPEED = 150;
 
@@ -26,12 +26,8 @@ public class GameManagerScript : MonoBehaviour
 
     private float translation;
 
-    private bool moveCommando = false;
     private GameObject toMoveCommando;
     private GameObject toSwapCommando;
-    private float moveCommandoDestinationY;
-    private float swapCommandoDestinationY;
-    private float moveCommandoDist;
     private GameObject movingCommandoShadow;
 
     private float distanceTraveled = 0;
@@ -45,7 +41,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject selectedCommandoGlyphRef;
     public GameObject selectedLaneHightlightRef;
 
-    private bool dragStarted;
+    private bool draggingCommando;
 
     // Use this for initialization
     void Start()
@@ -75,7 +71,7 @@ public class GameManagerScript : MonoBehaviour
         selectedLaneHightlightRef.transform.position = new Vector3(0, 0, 0);
         moveItemToLane(selectedLaneHightlightRef, -1);
 
-        dragStarted = false;
+        draggingCommando = false;
     }
 
     // Update is called once per frame
@@ -114,78 +110,68 @@ public class GameManagerScript : MonoBehaviour
             obstacles.Remove(obstacles [0]);
         }
 
-
-        // drag/swap
-        if (moveCommando)
-        {
-            Vector3 currentPosition = toMoveCommando.transform.position;
-            Vector3 dest = new Vector3(currentPosition.x, moveCommandoDestinationY, currentPosition.z);
-
-            toMoveCommando.transform.position = move(currentPosition, dest, elapsedTime * COMMANDO_SPEED);
-
-            if (toSwapCommando != null)
-            {
-                currentPosition = toSwapCommando.transform.position;
-                dest.y = swapCommandoDestinationY;
-                toSwapCommando.transform.position = move(currentPosition, dest, elapsedTime * COMMANDO_SPEED);
-            }
-
-            if (toMoveCommando.transform.position.y == moveCommandoDestinationY)
-            {
-                toMoveCommando.transform.position = new Vector3(toMoveCommando.transform.position.x, moveCommandoDestinationY, toMoveCommando.transform.position.z);
-                if (toSwapCommando != null)
-                    toSwapCommando.transform.position = new Vector3(toSwapCommando.transform.position.x, swapCommandoDestinationY, toSwapCommando.transform.position.z);
-                moveCommando = false;
-                toSwapCommando = null;
-            }
-        } else if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             // find lane
             Vector3 convertedMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int laneNum = findLaneNum(convertedMouse.y);
-            //prtoMoveCommando			
+            int laneNum = findLaneNum(convertedMouse.y);	
             toMoveCommando = getCommandoInLane(laneNum);
             if (toMoveCommando != null)
             {
                 moveItemToLane(selectedCommandoGlyphRef, laneNum);
-                dragStarted = true;
+                draggingCommando = true;
 
                 movingCommandoShadow = createCommandoShadow(toMoveCommando);
             }
         } else if (toMoveCommando != null && Input.GetMouseButtonUp(0))
         {
-            // find lane
-            Vector3 convertedMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int laneNum = findLaneNum(convertedMouse.y);
-			
-            if (dragStarted)
+            if (draggingCommando)
             {
-                dragStarted = false;
+                draggingCommando = false;
                 moveItemToLane(selectedLaneHightlightRef, -1);
                 Destroy(movingCommandoShadow);
             }
-
-            if (laneNum == -1)
-                return;
-
-            toSwapCommando = getCommandoInLane(laneNum);
-            moveCommandoDestinationY = getLaneCenterY(laneNum);
-            swapCommandoDestinationY = toMoveCommando.transform.position.y;
-            moveCommandoDist = Mathf.Abs(moveCommandoDestinationY - toMoveCommando.transform.position.y);
-            moveCommando = true;
+            
+            Vector3 convertedMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            int laneNum = findLaneNum(convertedMouse.y);
+			
+            toSwapCommando = getCommandoInLane(laneNum);            
+            if (toSwapCommando != null)
+                toSwapCommando.GetComponent<Commando>().Move(toMoveCommando.transform.position);
+            
+            Vector3 toMoveCommandoDest = toMoveCommando.transform.position;
+            toMoveCommandoDest.y = getLaneCenterY(laneNum);
+            toMoveCommando.GetComponent<Commando>().Move(toMoveCommandoDest);
 			
             moveItemToLane(selectedCommandoGlyphRef, -1);
-            GameObject.Find("MoveCommandoSound").GetComponent<AudioSource>().Play();
-        }
-
-        if (dragStarted)
+        } else if (draggingCommando)
         {
-            //update lane hightlght
-            Vector3 currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int currentLaneNum = findLaneNum(currentMousePos.y);
-            moveItemToLane(selectedLaneHightlightRef, currentLaneNum);
-
-            movingCommandoShadow.transform.position = new Vector3(-300, currentMousePos.y, 0);
+            Vector3 convertedMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            int destLaneNum = findLaneNum(convertedMouse.y);
+            
+            /*toSwapCommando = getCommandoInLane(destLaneNum);            
+            if (toSwapCommando != null && toMoveCommando.name != toSwapCommando.name)
+            {
+                Vector3 dest = toSwapCommando.transform.position;
+                int moveDir = toMoveCommando.transform.position.y < toSwapCommando.transform.position.y ? 1 : -1;
+                dest.y = getLaneCenterY(findLaneNum(toSwapCommando.transform.position.y) - moveDir);
+                toSwapCommando.GetComponent<Commando>().Move(dest);
+            }
+            
+            int selectedCommandoLaneNum = findLaneNum(toMoveCommando.transform.position.y);
+            if (destLaneNum != selectedCommandoLaneNum)
+            {
+                int moveDir = destLaneNum - selectedCommandoLaneNum;
+                moveDir = moveDir / Mathf.Abs(moveDir);
+                Vector3 dest = toMoveCommando.transform.position;
+                dest.y = getLaneCenterY(selectedCommandoLaneNum + moveDir);
+                toMoveCommando.GetComponent<Commando>().Move(dest);
+                
+                moveItemToLane(selectedCommandoGlyphRef, destLaneNum);
+            }*/
+            
+            moveItemToLane(selectedLaneHightlightRef, destLaneNum);
+            movingCommandoShadow.transform.position = new Vector3(-300, convertedMouse.y, 0);
         }
 
         //update score
