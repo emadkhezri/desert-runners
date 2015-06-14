@@ -118,9 +118,6 @@ public class GameManagerScript : MonoBehaviour
         // drag/swap
         if (moveCommando)
         {
-            /*toMoveCommando.transform.position = Vector3.Lerp(toMoveCommando.transform.position
-			                                                 ,new Vector3(toMoveCommando.transform.position.x,moveCommandoDestinationY,toMoveCommando.transform.position.z)		                                                 
-			                                                 ,Time.deltaTime*MOVE_SPEED);*/
             Vector3 currentPosition = toMoveCommando.transform.position;
             Vector3 dest = new Vector3(currentPosition.x, moveCommandoDestinationY, currentPosition.z);
 
@@ -211,15 +208,19 @@ public class GameManagerScript : MonoBehaviour
     private int findLaneNum(float y)
     {
         int laneNum = (int)Mathf.Floor((y - lanesStartY) / LANE_WIDTH);
-        if (laneNum < 0 || laneNum >= LANE_COUNT)
-            return -1;
+        if (laneNum < 0)
+            return 0;
+        if (laneNum >= LANE_COUNT)
+            return LANE_COUNT - 1;
 
         return laneNum;
     }
+    
     private float getLaneCenterY(int laneNum) // 0..
     {
         return (laneNum * 100) + lanesStartY + LANE_WIDTH / 2;
     }
+    
     private GameObject getCommandoInLane(int laneNum)
     {
         float laneCenterY = getLaneCenterY(laneNum);

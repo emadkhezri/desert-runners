@@ -2,7 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\GameManagerScript.cs">
     <Files>
-      <File FileName="Assets\scripts\GameManagerScript.cs" Line="246" Column="1" />
+      <File FileName="Assets\scripts\GameManagerScript.cs" Line="214" Column="35" />
+      <File FileName="Assets\scripts\Commando.cs" Line="10" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
