@@ -53,7 +53,7 @@ public class HighScoreController : MonoBehaviour
     {
         Text scoreText = GameObject.Find("GameOverMessage").GetComponent<Text>();
         print(scoreText.name);
-        scoreText.text = "Submitting\nScore...";
+        scoreText.text = "Getting Hiscores...";
         WWW hs_get = new WWW(highscoreURL);
         yield return hs_get;
         
