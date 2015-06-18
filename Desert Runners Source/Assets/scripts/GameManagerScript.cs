@@ -277,7 +277,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void submitHighscore()
     {
-        string playerName = GameObject.Find("PlayerNameInput").GetComponent<UnityEngine.UI.InputField>().text.text;
+        string playerName = GameObject.Find("PlayerNameInput").GetComponent<UnityEngine.UI.InputField>().text;
         GameObject.Find("SubmitBtn").SetActive(false);
         GameObject.Find("PlayerNameInput").SetActive(false);
         HighScoreController hsController = GameObject.Find("HighScoreController").GetComponent<HighScoreController>();
