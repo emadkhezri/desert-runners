@@ -5,6 +5,12 @@ public class Commando : MonoBehaviour
 {
     
     private MovementParams movementParams;
+    public GameObject gameManager;
+    
+    void Start()
+    {
+        gameManager = GameObject.Find("GameManager");
+    }
     
     void Update()
     {
@@ -16,11 +22,13 @@ public class Commando : MonoBehaviour
             if (fracJourney >= 1)
                 movementParams.isMoving = false;
         }
+        
+        GetComponent<Animator>().speed = gameManager.GetComponent<GameManagerScript>().MovementSpeed / 300f;
     }
     
     void OnTriggerEnter2D(Collider2D col)
     {
-        GameObject.Find("GameManager").GetComponent<GameManagerScript>().gameOver();
+        gameManager.GetComponent<GameManagerScript>().gameOver();
     }
     
     public void Move(Vector3 dest)

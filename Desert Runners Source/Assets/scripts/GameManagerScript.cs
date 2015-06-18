@@ -21,12 +21,13 @@ public class GameManagerScript : MonoBehaviour
     {
         get
         {
-            return SPEED;
+            return currentSpeed;
         }
     }
     
     //private fields
-    private float SPEED = 150;
+    private const float InitialSpeed = 150;
+    private float currentSpeed = InitialSpeed;
     private float LANE_WIDTH = 100;
     private float lanesStartY; // read from gameobject
     private int LANE_COUNT = 6;
@@ -83,7 +84,7 @@ public class GameManagerScript : MonoBehaviour
 
         float elapsedTime = Time.deltaTime;
 
-        float translation = elapsedTime * SPEED;
+        float translation = elapsedTime * currentSpeed;
         distanceTraveled += translation;
 
         generateObstacles();
@@ -239,7 +240,8 @@ public class GameManagerScript : MonoBehaviour
         else if (lastGeneratedObstacleId < 30)
             OBSTACLE_COUNT = 3;
 
-        SPEED += 10;
+        currentSpeed = InitialSpeed + Mathf.Sqrt(2 * distanceTraveled);
+        print("current speed: " + currentSpeed);
         // generate
         List<GameObject> currentList = new List<GameObject>();
         for (int i=0; i<Random.Range(Mathf.Max(1,OBSTACLE_COUNT-1), OBSTACLE_COUNT+1); i++)
