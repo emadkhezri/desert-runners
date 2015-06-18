@@ -45,9 +45,8 @@ public class GameManagerScript : MonoBehaviour
     {
         if (rightToleftMovement)
         {
-            print("-1");
             Matrix4x4 mat = Camera.main.projectionMatrix;
-            mat *= Matrix4x4.Scale(new Vector3(-1.4f, 1f, 1f));
+            mat *= Matrix4x4.Scale(new Vector3(-1.0f, 1f, 1f));
             Camera.main.projectionMatrix = mat;
         }
         
@@ -179,10 +178,15 @@ public class GameManagerScript : MonoBehaviour
         }
 
         //update score
-        scoreText.GetComponent<UnityEngine.UI.Text>().text = "score: " + Mathf.FloorToInt(distanceTraveled / 100);
+        scoreText.GetComponent<UnityEngine.UI.Text>().text = "score: " + getScore();
 
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.LoadLevel("homeScene");
+    }
+    
+    private int getScore()
+    {
+        return Mathf.FloorToInt(distanceTraveled / 100);
     }
 
     private Vector3 move(Vector3 currentPosition, Vector3 dest, float distanceToMove)
@@ -264,9 +268,19 @@ public class GameManagerScript : MonoBehaviour
     public void gameOver()
     {
         Time.timeScale = 0;
-        print("score:" + distanceTraveled);
-        // TODO: show score
+        print("score:" + getScore());
         gameOverCanvasRef.SetActive(true);
+        
+    }
+
+    public void submitHighscore()
+    {
+        string playerName = GameObject.Find("PlayerNameInput").GetComponent<UnityEngine.UI.InputField>().text.text;
+        GameObject.Find("SubmitBtn").SetActive(false);
+        GameObject.Find("PlayerNameInput").SetActive(false);
+        HighScoreController hsController = GameObject.Find("HighScoreController").GetComponent<HighScoreController>();
+        StartCoroutine(hsController.PostScores(playerName, getScore()));
+        StartCoroutine(hsController.GetScores());    
     }
 
     public void restartGame()

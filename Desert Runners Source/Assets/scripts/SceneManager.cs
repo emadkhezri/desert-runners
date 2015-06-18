@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SceneManager : MonoBehaviour {
+public class SceneManager : MonoBehaviour
+{
 
-	void onUpdate()
-	{
-		if(Input.GetKeyDown(KeyCode.Escape))
-			Application.Quit();
-	}
+    void onUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+    }
 }

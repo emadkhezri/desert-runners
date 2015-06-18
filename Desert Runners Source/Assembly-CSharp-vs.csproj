@@ -51,6 +51,7 @@
      <Compile Include="Assets\scripts\CreditsBtn.cs" />
      <Compile Include="Assets\scripts\ExitBtn.cs" />
      <Compile Include="Assets\scripts\GameManagerScript.cs" />
+     <Compile Include="Assets\scripts\HighScoreController.cs" />
      <Compile Include="Assets\scripts\ObstacleScript.cs" />
      <Compile Include="Assets\scripts\Remover.cs" />
      <Compile Include="Assets\scripts\SceneManager.cs" />
