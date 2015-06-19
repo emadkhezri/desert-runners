@@ -297,6 +297,12 @@ public class GameManagerScript : MonoBehaviour
         HighScoreController hsController = GameObject.Find("HighScoreController").GetComponent<HighScoreController>();
         StartCoroutine(hsController.PostScores(playerName, getScore()));
     }
+    
+    public void refreshHiscores()
+    {
+        HighScoreController hsController = GameObject.Find("HighScoreController").GetComponent<HighScoreController>();
+        StartCoroutine(hsController.GetScores());
+    }
 
     public void restartGame()
     {
