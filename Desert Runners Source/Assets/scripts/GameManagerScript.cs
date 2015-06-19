@@ -45,6 +45,7 @@ public class GameManagerScript : MonoBehaviour
 
     void Start()
     {
+        Screen.fullScreen = true;
         if (rightToleftMovement)
         {
             Matrix4x4 mat = Camera.main.projectionMatrix;
