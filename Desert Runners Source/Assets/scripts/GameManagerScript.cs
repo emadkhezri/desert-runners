@@ -11,10 +11,11 @@ public class GameManagerScript : MonoBehaviour
     public GameObject selectedCommandoGlyphRef;
     public GameObject selectedLaneHightlightRef;
     
-    //Movement Settings
+    //Settings
     public bool tapAndReleaseMode = false;
     public bool allowSwaps = false;
     public bool rightToleftMovement = false;
+    public bool useCommandoShadow = false;
     
     //properties
     public float CurrentMovementSpeed
@@ -106,8 +107,9 @@ public class GameManagerScript : MonoBehaviour
             {
                 moveItemToLane(selectedCommandoGlyphRef, laneNum);
                 draggingCommando = true;
-
-                movingCommandoShadow = createCommandoShadow(toMoveCommando);
+                
+                if (useCommandoShadow)
+                    movingCommandoShadow = createCommandoShadow(toMoveCommando);
             }
         } else if (toMoveCommando != null && Input.GetMouseButtonUp(0))
         {
@@ -115,8 +117,9 @@ public class GameManagerScript : MonoBehaviour
             {
                 draggingCommando = false;
                 moveItemToLane(selectedLaneHightlightRef, -1);
-                Destroy(movingCommandoShadow);
                 moveItemToLane(selectedCommandoGlyphRef, -1);
+                if (useCommandoShadow)
+                    Destroy(movingCommandoShadow);
             }
             
             if (tapAndReleaseMode)
@@ -141,13 +144,20 @@ public class GameManagerScript : MonoBehaviour
             Vector3 convertedMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             int destLaneNum = findLaneNum(convertedMouse.y);
             
+            moveItemToLane(selectedLaneHightlightRef, destLaneNum);
+            print("alpha= " + getLaneHightlightAlpha());
+            selectedLaneHightlightRef.GetComponent<SpriteRenderer>().color = new Color(0, 255, 0, .2f);
+            
             if (!tapAndReleaseMode)
             {
                 toSwapCommando = getCommandoInLane(destLaneNum);            
                 if (toSwapCommando != null && toMoveCommando.name != toSwapCommando.name)
                 {
                     if (!allowSwaps)
+                    {
+                        selectedLaneHightlightRef.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0, getLaneHightlightAlpha());
                         return;
+                    }
                         
                     Vector3 dest = toSwapCommando.transform.position;
                     int moveDir = toMoveCommando.transform.position.y < toSwapCommando.transform.position.y ? 1 : -1;
@@ -173,7 +183,8 @@ public class GameManagerScript : MonoBehaviour
             }
             
             moveItemToLane(selectedLaneHightlightRef, destLaneNum);
-            movingCommandoShadow.transform.position = new Vector3(-300, convertedMouse.y, 0);
+            if (useCommandoShadow)
+                movingCommandoShadow.transform.position = new Vector3(-300, convertedMouse.y, 0);
         }
 
         //update score
@@ -181,6 +192,11 @@ public class GameManagerScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.LoadLevel("homeScene");
+    }
+    
+    private float getLaneHightlightAlpha()
+    {
+        return 0.2f + .1f * Mathf.Sin(Time.time * 10);
     }
     
     private int getScore()
