@@ -146,8 +146,7 @@ public class GameManagerScript : MonoBehaviour
             int destLaneNum = findLaneNum(convertedMouse.y);
             
             moveItemToLane(selectedLaneHightlightRef, destLaneNum);
-            print("alpha= " + getLaneHightlightAlpha());
-            selectedLaneHightlightRef.GetComponent<SpriteRenderer>().color = new Color(0, 255, 0, .2f);
+            selectedLaneHightlightRef.GetComponent<SpriteRenderer>().color = Color.green;
             
             if (!tapAndReleaseMode)
             {
@@ -156,7 +155,7 @@ public class GameManagerScript : MonoBehaviour
                 {
                     if (!allowSwaps)
                     {
-                        selectedLaneHightlightRef.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0, getLaneHightlightAlpha());
+                        selectedLaneHightlightRef.GetComponent<SpriteRenderer>().color = Color.red;
                         return;
                     }
                         
@@ -197,7 +196,7 @@ public class GameManagerScript : MonoBehaviour
     
     private float getLaneHightlightAlpha()
     {
-        return 0.2f + .1f * Mathf.Sin(Time.time * 10);
+        return 0.2f + .1f * Mathf.Sin(Time.time * 3);
     }
     
     private int getScore()

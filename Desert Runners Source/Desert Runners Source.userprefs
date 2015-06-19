@@ -1,11 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\GameManagerScript.cs">
     <Files>
-      <File FileName="Assets\scripts\GameManagerScript.cs" Line="199" Column="53" />
-      <File FileName="Assets\scripts\HighScoreController.cs" Line="45" Column="40" />
-      <File FileName="Assets\scripts\Commando.cs" Line="26" Column="93" />
-      <File FileName="Assets\scripts\ObstacleScript.cs" Line="13" Column="131" />
+      <File FileName="Assets\scripts\GameManagerScript.cs" Line="199" Column="52" />
+      <File FileName="Assets\scripts\GameManagerScript.cs" Line="199" Column="16" />
+      <File FileName="Assets\scripts\HighScoreController.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Commando.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\ObstacleScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\CameraScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
