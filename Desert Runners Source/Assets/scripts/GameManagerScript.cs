@@ -17,7 +17,7 @@ public class GameManagerScript : MonoBehaviour
     public bool rightToleftMovement = false;
     
     //properties
-    public float MovementSpeed
+    public float CurrentMovementSpeed
     {
         get
         {
@@ -82,9 +82,7 @@ public class GameManagerScript : MonoBehaviour
         if (Time.timeScale == 0)
             return;
 
-        float elapsedTime = Time.deltaTime;
-
-        float translation = elapsedTime * currentSpeed;
+        float translation = Time.deltaTime * currentSpeed;
         distanceTraveled += translation;
 
         generateObstacles();
