@@ -52,6 +52,7 @@
      <Compile Include="Assets\scripts\ExitBtn.cs" />
      <Compile Include="Assets\scripts\GameManagerScript.cs" />
      <Compile Include="Assets\scripts\HighScoreController.cs" />
+     <Compile Include="Assets\scripts\InfiniteBackgroundCreator.cs" />
      <Compile Include="Assets\scripts\LaneHighlight.cs" />
      <Compile Include="Assets\scripts\ObstacleScript.cs" />
      <Compile Include="Assets\scripts\Remover.cs" />

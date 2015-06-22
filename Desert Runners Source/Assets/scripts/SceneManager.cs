@@ -4,9 +4,14 @@ using System.Collections;
 public class SceneManager : MonoBehaviour
 {
 
-    void onUpdate()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
+    }
+    
+    public void startGame()
+    {
+        Application.LoadLevel("gameScene");
     }
 }
