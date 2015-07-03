@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class GameManagerScript : MonoBehaviour
+public class GameManagerScript : MonoBehaviour, IFaderListener
 {
     
     public GameObject Prefab_obs_indest;
@@ -43,6 +43,7 @@ public class GameManagerScript : MonoBehaviour
     private GameObject gameOverCanvasRef;
     private bool draggingCommando;
     private Sprite[] obstacleSprites;
+    private ScreenFader screenFader;
 
     void Start()
     {
@@ -54,7 +55,7 @@ public class GameManagerScript : MonoBehaviour
             Camera.main.projectionMatrix = mat;
         }
         
-        Time.timeScale = 1;
+        Time.timeScale = 0;
 
         lanesStartY = GameObject.Find("LaneGuide").transform.position.y;
 
@@ -80,7 +81,9 @@ public class GameManagerScript : MonoBehaviour
         draggingCommando = false;
         
         obstacleSprites = Resources.LoadAll<Sprite>("ObstacleSprites");
-        print(string.Format("loaded {0} sprites.", obstacleSprites.Length));
+        
+        screenFader = GameObject.Find("ScreenFader").GetComponent<ScreenFader>();
+        screenFader.FadeIn(this);
     }
 
     void Update()
@@ -289,10 +292,18 @@ public class GameManagerScript : MonoBehaviour
 
     public void gameOver()
     {
+        screenFader.FadeOut(this);
         Time.timeScale = 0;
-        print("score:" + getScore());
+    }
+    
+    public void onFadeOutDone()
+    {
         gameOverCanvasRef.SetActive(true);
-        
+    }
+    
+    public void onFadeInDone()
+    {
+        Time.timeScale = 1;
     }
 
     public void submitHighscore()

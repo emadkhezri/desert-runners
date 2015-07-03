@@ -17,10 +17,7 @@ public class MovingObject : MonoBehaviour
     {
         this.transform.Translate(-speed * Time.deltaTime, 0, 0);
         if (this.transform.position.x < leftHorizontalBound)
-        {
-            Vector3 currentPos = this.transform.position;
             this.transform.position = new Vector3(initialPos.x, initialPos.y, initialPos.z);
-        }
     }
     
 }

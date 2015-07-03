@@ -52,12 +52,14 @@
      <Compile Include="Assets\scripts\ExitBtn.cs" />
      <Compile Include="Assets\scripts\GameManagerScript.cs" />
      <Compile Include="Assets\scripts\HighScoreController.cs" />
+     <Compile Include="Assets\scripts\IFaderListener.cs" />
      <Compile Include="Assets\scripts\InfiniteBackgroundCreator.cs" />
      <Compile Include="Assets\scripts\LaneHighlight.cs" />
      <Compile Include="Assets\scripts\MovingObject.cs" />
      <Compile Include="Assets\scripts\ObstacleScript.cs" />
      <Compile Include="Assets\scripts\Remover.cs" />
      <Compile Include="Assets\scripts\SceneManager.cs" />
+     <Compile Include="Assets\scripts\ScreenFader.cs" />
      <Compile Include="Assets\scripts\StartBtn.cs" />
      <Compile Include="Assets\scripts\creditsScreen.cs" />
  <Reference Include="UnityEngine.UI">
