@@ -34,7 +34,7 @@ public class GameManagerScript : MonoBehaviour
     private int LANE_COUNT = 6;
     private float OBSTACLE_GENERATE_DISTANCE = 1000; 
     private int OBSTACLE_COUNT = 1;
-    private GameObject[] terrains; 
+    private GameObject[] terrains;
     private GameObject toMoveCommando;
     private GameObject toSwapCommando;
     private GameObject movingCommandoShadow;
@@ -42,6 +42,7 @@ public class GameManagerScript : MonoBehaviour
     private int lastGeneratedObstacleId = -1;
     private GameObject gameOverCanvasRef;
     private bool draggingCommando;
+    private Sprite[] obstacleSprites;
 
     void Start()
     {
@@ -77,6 +78,9 @@ public class GameManagerScript : MonoBehaviour
         moveItemToLane(selectedLaneHightlightRef, -1);
 
         draggingCommando = false;
+        
+        obstacleSprites = Resources.LoadAll<Sprite>("ObstacleSprites");
+        print(string.Format("loaded {0} sprites.", obstacleSprites.Length));
     }
 
     void Update()
@@ -90,10 +94,10 @@ public class GameManagerScript : MonoBehaviour
         generateObstacles();
 
         // terrains
-        if (terrains [0].transform.position.x <= -2048)
-            terrains [0].transform.position = new Vector3(terrains [1].transform.position.x + 2048, terrains [1].transform.position.y, terrains [1].transform.position.z);
-        if (terrains [1].transform.position.x <= -2048)
-            terrains [1].transform.position = new Vector3(terrains [0].transform.position.x + 2048, terrains [0].transform.position.y, terrains [0].transform.position.z);
+        if (terrains [0].transform.position.x <= -4096)
+            terrains [0].transform.position = new Vector3(terrains [1].transform.position.x + 4096, terrains [1].transform.position.y, terrains [1].transform.position.z);
+        if (terrains [1].transform.position.x <= -4096)
+            terrains [1].transform.position = new Vector3(terrains [0].transform.position.x + 4096, terrains [0].transform.position.y, terrains [0].transform.position.z);
 
         terrains [0].transform.Translate(-translation, 0, 0);
         terrains [1].transform.Translate(-translation, 0, 0);
@@ -275,7 +279,9 @@ public class GameManagerScript : MonoBehaviour
                 if (!found)
                     break;
             }
-
+            
+            //randomize obstacle image
+            Prefab_obs_indest.GetComponent<SpriteRenderer>().sprite = obstacleSprites [Random.Range(1, obstacleSprites.Length)];
             GameObject tempObs = (GameObject)Instantiate(Prefab_obs_indest, new Vector3(1200, y, 0), transform.rotation);
             currentList.Add(tempObs);
         }
