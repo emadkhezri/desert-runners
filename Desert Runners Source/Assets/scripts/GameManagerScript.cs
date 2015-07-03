@@ -95,9 +95,9 @@ public class GameManagerScript : MonoBehaviour
 
         // terrains
         if (terrains [0].transform.position.x <= -4096)
-            terrains [0].transform.position = new Vector3(terrains [1].transform.position.x + 4096, terrains [1].transform.position.y, terrains [1].transform.position.z);
+            terrains [0].transform.position = new Vector3(terrains [1].transform.position.x + 4095, terrains [1].transform.position.y, terrains [1].transform.position.z);
         if (terrains [1].transform.position.x <= -4096)
-            terrains [1].transform.position = new Vector3(terrains [0].transform.position.x + 4096, terrains [0].transform.position.y, terrains [0].transform.position.z);
+            terrains [1].transform.position = new Vector3(terrains [0].transform.position.x + 4095, terrains [0].transform.position.y, terrains [0].transform.position.z);
 
         terrains [0].transform.Translate(-translation, 0, 0);
         terrains [1].transform.Translate(-translation, 0, 0);
