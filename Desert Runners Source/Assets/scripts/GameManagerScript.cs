@@ -289,7 +289,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
             }
             
             //randomize obstacle image
-            Prefab_obs_indest.GetComponent<SpriteRenderer>().sprite = obstacleSprites [Random.Range(1, obstacleSprites.Length)];
+            Prefab_obs_indest.GetComponent<SpriteRenderer>().sprite = obstacleSprites [Random.Range(0, obstacleSprites.Length - 1)];
             GameObject tempObs = (GameObject)Instantiate(Prefab_obs_indest, new Vector3(1200, y, 0), transform.rotation);
             currentList.Add(tempObs);
         }
