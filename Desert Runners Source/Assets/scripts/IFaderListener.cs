@@ -11,6 +11,6 @@ using System;
 
 public interface IFaderListener
 {
-    void onFadeOutDone();
+    void onFadeOutDone(string param);
     void onFadeInDone();
 }

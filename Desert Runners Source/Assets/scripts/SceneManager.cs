@@ -21,10 +21,10 @@ public class SceneManager : MonoBehaviour, IFaderListener
     
     public void startGame()
     {
-        screenFader.FadeOut(this);
+        screenFader.FadeOut(this, null);
     }
     
-    public void onFadeOutDone()
+    public void onFadeOutDone(string param)
     {
         Application.LoadLevel("gameScene");
     }

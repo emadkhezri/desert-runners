@@ -14,6 +14,12 @@ public class Commando : MonoBehaviour
     
     void Update()
     {
+        if (gameManager.GetComponent<GameManagerScript>().IsGameOver())
+        {
+            this.GetComponent<Animator>().speed = 0;
+            return;
+        }
+        
         if (movementParams.isMoving)
         {
             float distCovered = (Time.time - movementParams.startTime) * MovementParams.SPEED;
@@ -28,6 +34,8 @@ public class Commando : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D col)
     {
+        this.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0, 0.5f);
+        col.gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0, 0.5f);
         gameManager.GetComponent<GameManagerScript>().gameOver();
     }
     

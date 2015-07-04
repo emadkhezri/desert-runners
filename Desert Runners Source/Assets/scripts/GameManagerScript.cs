@@ -44,6 +44,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     private bool draggingCommando;
     private Sprite[] obstacleSprites;
     private ScreenFader screenFader;
+    private bool isGameOver = false;
 
     void Start()
     {
@@ -88,7 +89,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     void Update()
     {
-        if (Time.timeScale == 0)
+        if (isGameOver)
             return;
 
         float translation = Time.deltaTime * currentSpeed;
@@ -201,6 +202,11 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
             Application.LoadLevel("homeScene");
     }
     
+    public bool IsGameOver()
+    {
+        return isGameOver;
+    }
+    
     private float getLaneHightlightAlpha()
     {
         return 0.2f + .1f * Mathf.Sin(Time.time * 3);
@@ -290,15 +296,24 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         }
     }
 
-    public void gameOver()
+    private IEnumerator showGameOverMenu()
     {
-        screenFader.FadeOut(this);
+        yield return new WaitForSeconds(.7f);
+        gameOverCanvasRef.SetActive(true);
         Time.timeScale = 0;
     }
-    
-    public void onFadeOutDone()
+
+    public void gameOver()
     {
-        gameOverCanvasRef.SetActive(true);
+        StartCoroutine(showGameOverMenu());
+        GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().Stop();
+        GameObject.Find("GameOverSound").GetComponent<AudioSource>().Play();
+        this.isGameOver = true;
+    }
+    
+    public void onFadeOutDone(string param)
+    {
+        Application.LoadLevel(param);
     }
     
     public void onFadeInDone()
@@ -323,12 +338,12 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     public void restartGame()
     {
-        Application.LoadLevel("gameScene");
+        screenFader.FadeOut(this, "gameScene");
     }
 
     public void loadHome()
     {
-        Application.LoadLevel("homeScene");
+        screenFader.FadeOut(this, "homeScene");
     }
 
     private void moveItemToLane(GameObject item, int laneNum)

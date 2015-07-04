@@ -11,6 +11,7 @@ public class ScreenFader : MonoBehaviour
     private Color transparentColor;
     private IFaderListener listener;
     private float fadeProgress;
+    private string listenerParam;
     
     void Start()
     {
@@ -45,7 +46,7 @@ public class ScreenFader : MonoBehaviour
                 currentState = State.Idle;
                 moveOutOfSight();
                 if (listener != null)
-                    listener.onFadeOutDone();
+                    listener.onFadeOutDone(listenerParam);
             }
         }
     }
@@ -59,9 +60,10 @@ public class ScreenFader : MonoBehaviour
         currentState = State.FadeIn;
     }
     
-    public void FadeOut(IFaderListener listener)
+    public void FadeOut(IFaderListener listener, string param)
     {
         //moveIntoSight();
+        this.listenerParam = param;
         fadeProgress = 0;
         this.listener = listener;
         startTime = Time.time;
