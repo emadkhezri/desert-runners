@@ -10,7 +10,7 @@ public class ScreenFader : MonoBehaviour
     private Color solidColor;
     private Color transparentColor;
     private IFaderListener listener;
-    private float fadeProgress;
+    //private float fadeProgress;
     private string listenerParam;
     
     void Start()
@@ -26,8 +26,8 @@ public class ScreenFader : MonoBehaviour
     {
         if (currentState == State.FadeIn)
         {
-            //float progress = (Time.time - startTime) / fadeDuration;
-            float progress = ++fadeProgress / fadeDuration;
+            float progress = (Time.time - startTime) / fadeDuration;
+            //float progress = ++fadeProgress / fadeDuration;
             this.GetComponent<UnityEngine.UI.Image>().color = Color.Lerp(solidColor, transparentColor, progress);
             if (progress >= 1)
             {
@@ -38,8 +38,8 @@ public class ScreenFader : MonoBehaviour
             }
         } else if (currentState == State.FadeOut)
         {
-            //float progress = (Time.time - startTime) / fadeDuration;
-            float progress = ++fadeProgress / fadeDuration;
+            float progress = (Time.time - startTime) / fadeDuration;
+            //float progress = ++fadeProgress / fadeDuration;
             this.GetComponent<UnityEngine.UI.Image>().color = Color.Lerp(transparentColor, solidColor, progress);
             if (progress >= 1)
             {
@@ -54,7 +54,7 @@ public class ScreenFader : MonoBehaviour
     public void FadeIn(IFaderListener listener)
     {
         //moveIntoSight();
-        fadeProgress = 0;
+        //fadeProgress = 0;
         this.listener = listener;
         startTime = Time.time;
         currentState = State.FadeIn;
@@ -64,7 +64,7 @@ public class ScreenFader : MonoBehaviour
     {
         //moveIntoSight();
         this.listenerParam = param;
-        fadeProgress = 0;
+        //fadeProgress = 0;
         this.listener = listener;
         startTime = Time.time;
         currentState = State.FadeOut;

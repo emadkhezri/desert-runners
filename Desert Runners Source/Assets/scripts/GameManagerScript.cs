@@ -44,7 +44,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     private bool draggingCommando;
     private Sprite[] obstacleSprites;
     private ScreenFader screenFader;
-    private bool isGameOver = false;
+    private bool isGameStopped = false;
 
     void Start()
     {
@@ -55,8 +55,6 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
             mat *= Matrix4x4.Scale(new Vector3(-1.0f, 1f, 1f));
             Camera.main.projectionMatrix = mat;
         }
-        
-        Time.timeScale = 0;
 
         lanesStartY = GameObject.Find("LaneGuide").transform.position.y;
 
@@ -84,12 +82,13 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         obstacleSprites = Resources.LoadAll<Sprite>("ObstacleSprites");
         
         screenFader = GameObject.Find("ScreenFader").GetComponent<ScreenFader>();
+        isGameStopped = true;
         screenFader.FadeIn(this);
     }
 
     void Update()
     {
-        if (isGameOver)
+        if (isGameStopped)
             return;
 
         float translation = Time.deltaTime * currentSpeed;
@@ -204,7 +203,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     public bool IsGameOver()
     {
-        return isGameOver;
+        return isGameStopped;
     }
     
     private float getLaneHightlightAlpha()
@@ -298,9 +297,8 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     private IEnumerator showGameOverMenu()
     {
-        yield return new WaitForSeconds(.7f);
+        yield return new WaitForSeconds(.5f);
         gameOverCanvasRef.SetActive(true);
-        Time.timeScale = 0;
     }
 
     public void gameOver()
@@ -308,7 +306,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         StartCoroutine(showGameOverMenu());
         GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().Stop();
         GameObject.Find("GameOverSound").GetComponent<AudioSource>().Play();
-        this.isGameOver = true;
+        this.isGameStopped = true;
     }
     
     public void onFadeOutDone(string param)
@@ -318,7 +316,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     public void onFadeInDone()
     {
-        Time.timeScale = 1;
+        this.isGameStopped = false;
     }
 
     public void submitHighscore()
@@ -338,11 +336,13 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     public void restartGame()
     {
+        gameOverCanvasRef.SetActive(false);
         screenFader.FadeOut(this, "gameScene");
     }
 
     public void loadHome()
     {
+        gameOverCanvasRef.SetActive(false);
         screenFader.FadeOut(this, "homeScene");
     }
 
