@@ -10,11 +10,15 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     public GameObject[] commandos;
     public GameObject selectedCommandoGlyphRef;
     public GameObject selectedLaneHightlightRef;
+    public GameObject[] terrains;
+    public GameObject scoreText;
+    public GameObject backGroundMusic;
     
     //Settings
     public bool tapAndReleaseMode = false;
     public bool allowSwaps = false;
     public bool useCommandoShadow = false;
+    private SettingsFile settingsFile;
     
     //properties
     public float CurrentMovementSpeed
@@ -33,7 +37,6 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     private int LANE_COUNT = 6;
     private float OBSTACLE_GENERATE_DISTANCE = 1000; 
     private int OBSTACLE_COUNT = 1;
-    private GameObject[] terrains;
     private GameObject toMoveCommando;
     private GameObject toSwapCommando;
     private GameObject movingCommandoShadow;
@@ -43,31 +46,35 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     private Sprite[] obstacleSprites;
     private ScreenFader screenFader;
     private bool isGameStopped = false;
-    private bool rightToleftMovement = false;
     
     //UI elements
     private GameObject gameOverCanvasRef;
-    private GameObject scoreText;
     private GameObject pauseButton;
     private GameObject pausePanel;
     public GameObject hiscoresPanel;
-    
-    //SFX
-    private AudioSource backGroundMusic;
 
     void Start()
     {
         Screen.fullScreen = true;
         //Time.timeScale = 1;
         
-        readSettings();
+        settingsFile = new SettingsFile("settings.dat");
+        try
+        {
+            settingsFile.load();
+        } catch (System.Exception ex)
+        {
+            print("Failed to load settings. ex= " + ex.Message);
+        }
         
-        if (rightToleftMovement)
+        if (settingsFile.enableRTL)
         {
             Matrix4x4 mat = Camera.main.projectionMatrix;
             mat *= Matrix4x4.Scale(new Vector3(-1.0f, 1f, 1f));
             Camera.main.projectionMatrix = mat;
         }
+        if (!settingsFile.enableMusic)
+            backGroundMusic.gameObject.SetActive(false);
 
         lanesStartY = GameObject.Find("LaneGuide").transform.position.y;
 
@@ -76,11 +83,6 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
             commandos [i].transform.position = new Vector3(-400, getLaneCenterY(i + 1), 0);
 
         toMoveCommando = null;
-
-        terrains = new GameObject[2];
-        terrains [0] = GameObject.Find("Terrain1");
-        terrains [1] = GameObject.Find("Terrain2");
-
 		
         selectedCommandoGlyphRef.transform.position = new Vector3(-400, 0, 0);
         moveItemToLane(selectedCommandoGlyphRef, -1);
@@ -96,7 +98,6 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         gameOverCanvasRef = GameObject.Find("GameOverCanvas");
         gameOverCanvasRef.SetActive(false);
         
-        scoreText = GameObject.Find("ScoreText");
         pauseButton = GameObject.Find("PauseButton");
         scoreText.SetActive(false);
         pauseButton.SetActive(false);
@@ -106,8 +107,6 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         
         //hiscoresPanel = GameObject.Find("HiscoresPanel");
         hideHiscoresPanel();
-        //SFX
-        backGroundMusic = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
         //
         screenFader = GameObject.Find("ScreenFader").GetComponent<ScreenFader>();
         isGameStopped = true;
@@ -434,21 +433,10 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         }
     }
     
-    private void readSettings()
-    {
-        try
-        {
-            rightToleftMovement = bool.Parse(File.ReadAllText("settings.dat"));
-        } catch (System.Exception ex)
-        {
-            print("Failed to read settings. ex= " + ex.Message);
-        }
-    }
-    
     public void pauseGame()
     {
         pauseButton.SetActive(false);
-        backGroundMusic.Pause();
+        backGroundMusic.GetComponent<AudioSource>().Pause();
         isGameStopped = true;
         showPausePanel();
         Time.timeScale = 0;
@@ -457,7 +445,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     public void resumeGame()
     {
         pauseButton.SetActive(true);
-        backGroundMusic.UnPause();
+        backGroundMusic.GetComponent<AudioSource>().UnPause();
         hidePausePanel();
         isGameStopped = false;
         Time.timeScale = 1;
