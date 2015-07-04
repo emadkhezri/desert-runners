@@ -6,6 +6,7 @@ public class SceneManager : MonoBehaviour, IFaderListener
 {
     private ScreenFader screenFader;
     private GameObject settingsPanel;
+    private GameObject hiscoresPanel;
     private SettingsFile settingsFile;
     private UnityEngine.UI.Toggle chkRTL;
     
@@ -29,6 +30,8 @@ public class SceneManager : MonoBehaviour, IFaderListener
         
         settingsPanel = GameObject.Find("SettingsPanel");
         settingsPanel.SetActive(false);
+        hiscoresPanel = GameObject.Find("HiscoresPanel");
+        hiscoresPanel.SetActive(false);
         
         screenFader = GameObject.Find("ScreenFader").GetComponent<ScreenFader>();
         screenFader.FadeIn(null);
@@ -63,6 +66,23 @@ public class SceneManager : MonoBehaviour, IFaderListener
     public void hideSettings()
     {
         settingsPanel.SetActive(false);
+    }
+    
+    public void showHiscores()
+    {
+        hiscoresPanel.SetActive(true);
+        refreshHiscores();
+    }
+    
+    public void hideHiscores()
+    {
+        hiscoresPanel.SetActive(false);
+    }
+    
+    public void refreshHiscores()
+    {
+        HighScoreController hsc = GameObject.Find("HighScoreController").GetComponent<HighScoreController>();
+        StartCoroutine(hsc.GetScores());
     }
     
     public void saveSettings()
