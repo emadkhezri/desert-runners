@@ -24,7 +24,7 @@ public class SceneManager : MonoBehaviour, IFaderListener
         {
             settingsFile = new SettingsFile("settings.dat");
             settingsFile.load();
-            
+            print(settingsFile.ToString());
             chkRTL.isOn = settingsFile.enableRTL;
             chkBackgroundMusic.isOn = settingsFile.enableMusic;
             chkSoundEffects.isOn = settingsFile.enableSFX;
@@ -32,7 +32,7 @@ public class SceneManager : MonoBehaviour, IFaderListener
         } catch (System.Exception ex)
         {
             print("Failed to load settings. ex= " + ex.Message);
-        }        
+        }
         
         settingsPanel = GameObject.Find("SettingsPanel");
         hiscoresPanel = GameObject.Find("HiscoresPanel");
@@ -100,9 +100,13 @@ public class SceneManager : MonoBehaviour, IFaderListener
     
     public void saveSettings()
     {
+        if (Time.timeSinceLevelLoad < 1)
+            return;
+            
         settingsFile.enableRTL = chkRTL.isOn;
         settingsFile.enableMusic = chkBackgroundMusic.isOn;
         settingsFile.enableSFX = chkSoundEffects.isOn;
+        print("settings changed>" + settingsFile.ToString());
         try
         {
             settingsFile.save();

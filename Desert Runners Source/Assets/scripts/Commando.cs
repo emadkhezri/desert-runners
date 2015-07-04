@@ -6,9 +6,11 @@ public class Commando : MonoBehaviour
     
     private MovementParams movementParams;
     public GameObject gameManager;
+    private GameObject moveCommandoSound;
     
     void Start()
     {
+        moveCommandoSound = GameObject.Find("MoveCommandoSound");
         gameManager = GameObject.Find("GameManager");
     }
     
@@ -48,8 +50,10 @@ public class Commando : MonoBehaviour
         movementParams.startPos = this.transform.position;
         movementParams.endPos = dest;            
         movementParams.startTime = Time.time;
-        GameObject.Find("MoveCommandoSound").GetComponent<AudioSource>().Play();
         movementParams.isMoving = true;
+        
+        if (gameManager.GetComponent<GameManagerScript>().SettingsFile.enableSFX)
+            moveCommandoSound.GetComponent<AudioSource>().Play();
     }
     
     private struct MovementParams

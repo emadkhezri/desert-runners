@@ -26,7 +26,6 @@ public class InfiniteBackgroundCreator : MonoBehaviour
         if (gameObj.transform.position.x < -patternLen)
         {
             Vector3 currentPos = gameObj.transform.position;
-            print("moving to: " + currentPos.x + backgroundItems.Length * patternLen);
             gameObj.transform.position = new Vector3(currentPos.x + backgroundItems.Length * patternLen, initialPos.y, initialPos.z);
         }
     }
