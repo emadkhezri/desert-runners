@@ -60,6 +60,7 @@
      <Compile Include="Assets\scripts\Remover.cs" />
      <Compile Include="Assets\scripts\SceneManager.cs" />
      <Compile Include="Assets\scripts\ScreenFader.cs" />
+     <Compile Include="Assets\scripts\SettingsFile.cs" />
      <Compile Include="Assets\scripts\StartBtn.cs" />
      <Compile Include="Assets\scripts\creditsScreen.cs" />
  <Reference Include="UnityEngine.UI">

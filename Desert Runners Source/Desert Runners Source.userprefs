@@ -1,8 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\GameManagerScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\SceneManager.cs">
     <Files>
-      <File FileName="Assets\scripts\GameManagerScript.cs" Line="293" Column="113" />
+      <File FileName="Assets\scripts\SceneManager.cs" Line="70" Column="23" />
+      <File FileName="Assets\scripts\GameManagerScript.cs" Line="401" Column="10" />
+      <File FileName="Assets\scripts\SettingsFile.cs" Line="22" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
