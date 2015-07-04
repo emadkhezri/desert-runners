@@ -299,6 +299,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     {
         yield return new WaitForSeconds(.5f);
         gameOverCanvasRef.SetActive(true);
+        GameObject.Find("GameOverScoreText").GetComponent<UnityEngine.UI.Text>().text = "" + getScore();
     }
 
     public void gameOver()
