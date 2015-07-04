@@ -195,7 +195,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         }
 
         //update score
-        scoreText.GetComponent<UnityEngine.UI.Text>().text = "score: " + getScore();
+        scoreText.GetComponent<UnityEngine.UI.Text>().text = "" + getScore();
 
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.LoadLevel("homeScene");
