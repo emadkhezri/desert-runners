@@ -8,14 +8,12 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     public GameObject Prefab_obs_indest;
     public GameObject[] commandos;
-    public GameObject scoreText;
     public GameObject selectedCommandoGlyphRef;
     public GameObject selectedLaneHightlightRef;
     
     //Settings
     public bool tapAndReleaseMode = false;
     public bool allowSwaps = false;
-    public bool rightToleftMovement = false;
     public bool useCommandoShadow = false;
     
     //properties
@@ -41,15 +39,25 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     private GameObject movingCommandoShadow;
     private float distanceTraveled = 0;
     private int lastGeneratedObstacleId = -1;
-    private GameObject gameOverCanvasRef;
     private bool draggingCommando;
     private Sprite[] obstacleSprites;
     private ScreenFader screenFader;
     private bool isGameStopped = false;
+    private bool rightToleftMovement = false;
+    
+    //UI elements
+    private GameObject gameOverCanvasRef;
+    private GameObject scoreText;
+    private GameObject pauseButton;
+    private GameObject pausePanel;
+    
+    //SFX
+    private AudioSource backGroundMusic;
 
     void Start()
     {
         Screen.fullScreen = true;
+        //Time.timeScale = 1;
         
         readSettings();
         
@@ -72,8 +80,6 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         terrains [0] = GameObject.Find("Terrain1");
         terrains [1] = GameObject.Find("Terrain2");
 
-        gameOverCanvasRef = GameObject.Find("GameOverCanvas");
-        gameOverCanvasRef.SetActive(false);
 		
         selectedCommandoGlyphRef.transform.position = new Vector3(-400, 0, 0);
         moveItemToLane(selectedCommandoGlyphRef, -1);
@@ -84,7 +90,21 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         draggingCommando = false;
         
         obstacleSprites = Resources.LoadAll<Sprite>("ObstacleSprites");
+
+        //Init UI
+        gameOverCanvasRef = GameObject.Find("GameOverCanvas");
+        gameOverCanvasRef.SetActive(false);
         
+        scoreText = GameObject.Find("ScoreText");
+        pauseButton = GameObject.Find("PauseButton");
+        scoreText.SetActive(false);
+        pauseButton.SetActive(false);
+        
+        pausePanel = GameObject.Find("PausePanel");
+        hidePausePanel();
+        //SFX
+        backGroundMusic = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
+        //
         screenFader = GameObject.Find("ScreenFader").GetComponent<ScreenFader>();
         isGameStopped = true;
         screenFader.FadeIn(this);
@@ -323,6 +343,8 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     public void onFadeInDone()
     {
+        scoreText.SetActive(true);
+        pauseButton.SetActive(true);
         this.isGameStopped = false;
     }
 
@@ -343,12 +365,14 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     public void restartGame()
     {
+        hidePausePanel();
         gameOverCanvasRef.SetActive(false);
         screenFader.FadeOut(this, "gameScene");
     }
 
     public void loadHome()
     {
+        hidePausePanel();
         gameOverCanvasRef.SetActive(false);
         screenFader.FadeOut(this, "homeScene");
     }
@@ -414,4 +438,30 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
             print("Failed to read settings. ex= " + ex.Message);
         }
     }
+    
+    public void pauseGame()
+    {
+        backGroundMusic.Pause();
+        isGameStopped = true;
+        showPausePanel();
+        Time.timeScale = 0;
+    }
+    
+    public void resumeGame()
+    {
+        backGroundMusic.UnPause();
+        hidePausePanel();
+        isGameStopped = false;
+        Time.timeScale = 1;
+    }
+    
+    public void hidePausePanel()
+    {
+        pausePanel.SetActive(false);
+    }
+    
+    public void showPausePanel()
+    {
+        pausePanel.SetActive(true);
+    } 
 }
