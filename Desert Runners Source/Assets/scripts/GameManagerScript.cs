@@ -50,6 +50,9 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     void Start()
     {
         Screen.fullScreen = true;
+        
+        readSettings();
+        
         if (rightToleftMovement)
         {
             Matrix4x4 mat = Camera.main.projectionMatrix;
@@ -399,7 +402,16 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
             print("An exception occurred. ex= " + ex.Message);
             return getScore();
         }
-        
-        return 0;
+    }
+    
+    private void readSettings()
+    {
+        try
+        {
+            rightToleftMovement = bool.Parse(File.ReadAllText("settings.dat"));
+        } catch (System.Exception ex)
+        {
+            print("Failed to read settings. ex= " + ex.Message);
+        }
     }
 }
