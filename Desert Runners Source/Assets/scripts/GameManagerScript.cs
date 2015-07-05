@@ -326,6 +326,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     private IEnumerator showGameOverMenu()
     {
+        scoreText.SetActive(false);
         pauseButton.SetActive(false);
         yield return new WaitForSeconds(.5f);
         gameOverCanvasRef.SetActive(true);

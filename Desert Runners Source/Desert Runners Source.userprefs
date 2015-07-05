@@ -1,10 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\Commando.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\GameManagerScript.cs">
     <Files>
-      <File FileName="Assets\scripts\GameManagerScript.cs" Line="26" Column="36" />
-      <File FileName="Assets\scripts\SceneManager.cs" Line="35" Column="10" />
-      <File FileName="Assets\scripts\SettingsFile.cs" Line="42" Column="14" />
+      <File FileName="Assets\scripts\GameManagerScript.cs" Line="336" Column="6" />
+      <File FileName="Assets\scripts\SceneManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\SettingsFile.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\Commando.cs" Line="13" Column="66" />
     </Files>
   </MonoDevelop.Ide.Workbench>
