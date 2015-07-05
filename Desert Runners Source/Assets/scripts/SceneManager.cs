@@ -116,4 +116,9 @@ public class SceneManager : MonoBehaviour, IFaderListener
         }
     }
     
+    public void loadCredits()
+    {
+        Application.LoadLevel("creditsScene");
+    }
+    
 }
