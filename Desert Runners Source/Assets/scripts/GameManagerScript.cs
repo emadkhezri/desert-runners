@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class GameManagerScript : MonoBehaviour, IFaderListener
 {
@@ -299,7 +300,9 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     {
         yield return new WaitForSeconds(.5f);
         gameOverCanvasRef.SetActive(true);
+        
         GameObject.Find("GameOverScoreText").GetComponent<UnityEngine.UI.Text>().text = "" + getScore();
+        GameObject.Find("GameOverPersonalBest").GetComponent<UnityEngine.UI.Text>().text = "" + getPersonalBest();
     }
 
     public void gameOver()
@@ -370,5 +373,33 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         Destroy(shadow.GetComponent<Commando>());
 
         return shadow;
+    }
+    
+    private int getPersonalBest()
+    {
+        string fileName = "personalBest.dat";
+        try
+        {
+            if (!File.Exists(fileName))
+            {
+                File.WriteAllText(fileName, getScore().ToString());
+                return getScore();
+            }
+                
+            int personalBest = int.Parse(File.ReadAllText(fileName));
+            if (getScore() > personalBest)
+            {
+                File.WriteAllText(fileName, getScore().ToString());
+                return getScore();
+            }
+            
+            return personalBest;
+        } catch (System.Exception ex)
+        {
+            print("An exception occurred. ex= " + ex.Message);
+            return getScore();
+        }
+        
+        return 0;
     }
 }
