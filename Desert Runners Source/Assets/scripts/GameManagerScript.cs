@@ -61,7 +61,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         Screen.fullScreen = true;
         //Time.timeScale = 1;
         
-        settingsFile = new SettingsFile("settings.dat");
+        settingsFile = new SettingsFile(Path.Combine(Application.persistentDataPath, "settings.dat"));
         try
         {
             settingsFile.load();
@@ -432,7 +432,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     private int getPersonalBest()
     {
-        string fileName = "personalBest.dat";
+        string fileName = Path.Combine(Application.persistentDataPath, "personalBest.dat");
         try
         {
             if (!File.Exists(fileName))
