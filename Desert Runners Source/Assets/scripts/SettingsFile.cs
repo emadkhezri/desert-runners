@@ -4,17 +4,21 @@ using System.IO;
 
 public class SettingsFile
 {
+    public bool enableRTL = false;
+    public bool enableMusic = true;
+    public bool enableSFX = true;
     private string fileName;
     
     public SettingsFile(string fileName)
     {
         this.fileName = fileName;
-    }
-    
-    public bool RTL
-    {
-        get;
-        set;
+        try
+        {
+            load();
+        } catch (System.Exception)
+        {
+            save();
+        }
     }
     
     /**
@@ -22,7 +26,13 @@ public class SettingsFile
     */
     public void save()
     {
-        File.WriteAllText(fileName, RTL.ToString());
+        string[] lines = new string[3];
+        
+        lines [0] = enableRTL.ToString();
+        lines [1] = enableMusic.ToString();
+        lines [2] = enableSFX.ToString();
+        
+        File.WriteAllLines(fileName, lines);
     }
     
     /**
@@ -30,6 +40,9 @@ public class SettingsFile
     */
     public void load()
     {
-        RTL = bool.Parse(File.ReadAllText(fileName));
+        string[] lines = File.ReadAllLines(fileName);
+        enableRTL = bool.Parse(lines [0]);
+        enableMusic = bool.Parse(lines [1]);
+        enableSFX = bool.Parse(lines [2]);
     }
 }

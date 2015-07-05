@@ -9,18 +9,25 @@ public class SceneManager : MonoBehaviour, IFaderListener
     private GameObject hiscoresPanel;
     private SettingsFile settingsFile;
     private UnityEngine.UI.Toggle chkRTL;
+    private UnityEngine.UI.Toggle chkBackgroundMusic;
+    private UnityEngine.UI.Toggle chkSoundEffects;
     
     void Start()
     {
         Time.timeScale = 1;
         
         chkRTL = GameObject.Find("ChkRTL").GetComponent<UnityEngine.UI.Toggle>();
+        chkBackgroundMusic = GameObject.Find("ChkBackgroundMusic").GetComponent<UnityEngine.UI.Toggle>();
+        chkSoundEffects = GameObject.Find("ChkSoundEffects").GetComponent<UnityEngine.UI.Toggle>();
         
         try
         {
             settingsFile = new SettingsFile("settings.dat");
             settingsFile.load();
-            chkRTL.isOn = settingsFile.RTL;
+            
+            chkRTL.isOn = settingsFile.enableRTL;
+            chkBackgroundMusic.isOn = settingsFile.enableMusic;
+            chkSoundEffects.isOn = settingsFile.enableSFX;
             
         } catch (System.Exception ex)
         {
@@ -93,7 +100,9 @@ public class SceneManager : MonoBehaviour, IFaderListener
     
     public void saveSettings()
     {
-        settingsFile.RTL = chkRTL.isOn;
+        settingsFile.enableRTL = chkRTL.isOn;
+        settingsFile.enableMusic = chkBackgroundMusic.isOn;
+        settingsFile.enableSFX = chkSoundEffects.isOn;
         try
         {
             settingsFile.save();
