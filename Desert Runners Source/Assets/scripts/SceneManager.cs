@@ -25,13 +25,12 @@ public class SceneManager : MonoBehaviour, IFaderListener
         } catch (System.Exception ex)
         {
             print("Failed to load settings. ex= " + ex.Message);
-        }
-        
+        }        
         
         settingsPanel = GameObject.Find("SettingsPanel");
-        settingsPanel.SetActive(false);
         hiscoresPanel = GameObject.Find("HiscoresPanel");
-        hiscoresPanel.SetActive(false);
+        hideHiscores();
+        hideSettings();
         
         screenFader = GameObject.Find("ScreenFader").GetComponent<ScreenFader>();
         screenFader.FadeIn(null);
@@ -46,6 +45,11 @@ public class SceneManager : MonoBehaviour, IFaderListener
     
     public void startGame()
     {
+        hideSettings();
+        hideHiscores();
+        GameObject.Find("MainPanel").SetActive(false);
+        GameObject.Find("Title").SetActive(false);
+        
         screenFader.FadeOut(this, null);
     }
     
@@ -60,6 +64,7 @@ public class SceneManager : MonoBehaviour, IFaderListener
     
     public void showSettings()
     {
+        hideHiscores();
         settingsPanel.SetActive(true);
     }
     
@@ -70,6 +75,7 @@ public class SceneManager : MonoBehaviour, IFaderListener
     
     public void showHiscores()
     {
+        hideSettings();
         hiscoresPanel.SetActive(true);
         refreshHiscores();
     }

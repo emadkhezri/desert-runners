@@ -1,11 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\SceneManager.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="d:\AMZ\Computers\Code\Unity\Desert Runners\Desert Runners Source\Assets\scripts\CameraScript.cs">
     <Files>
-      <File FileName="Assets\scripts\HighScoreController.cs" Line="7" Column="21" />
-      <File FileName="Assets\scripts\SceneManager.cs" Line="74" Column="27" />
       <File FileName="Assets\scripts\GameManagerScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\scripts\SettingsFile.cs" Line="1" Column="1" />
+      <File FileName="d:\AMZ\Computers\Code\Unity\Desert Runners\Desert Runners Source\Assets\scripts\CameraScript.cs" Line="20" Column="11" />
+      <File FileName="d:\AMZ\Computers\Code\Unity\Desert Runners\Desert Runners Source\Assets\scripts\GameManagerScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
