@@ -23,10 +23,12 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     //properties
     public float CurrentMovementSpeed
     {
-        get
-        {
-            return currentSpeed;
-        }
+        get { return currentSpeed;}
+    }
+    
+    public SettingsFile SettingsFile
+    {
+        get { return settingsFile;}
     }
     
     //private fields
@@ -335,8 +337,9 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     public void gameOver()
     {
         StartCoroutine(showGameOverMenu());
-        GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().Stop();
-        GameObject.Find("GameOverSound").GetComponent<AudioSource>().Play();
+        backGroundMusic.GetComponent<AudioSource>().Stop();
+        if (settingsFile.enableSFX)
+            GameObject.Find("GameOverSound").GetComponent<AudioSource>().Play();
         this.isGameStopped = true;
     }
     

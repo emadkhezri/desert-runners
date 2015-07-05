@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO;
 
-public class SettingsFile
+public class SettingsFile : MonoBehaviour
 {
     public bool enableRTL = false;
     public bool enableMusic = true;
@@ -12,13 +12,6 @@ public class SettingsFile
     public SettingsFile(string fileName)
     {
         this.fileName = fileName;
-        try
-        {
-            load();
-        } catch (System.Exception)
-        {
-            save();
-        }
     }
     
     /**
@@ -44,5 +37,10 @@ public class SettingsFile
         enableRTL = bool.Parse(lines [0]);
         enableMusic = bool.Parse(lines [1]);
         enableSFX = bool.Parse(lines [2]);
+    }
+    
+    override public string ToString()
+    {
+        return string.Format("rtl: {0}, music: {1}, sfx: {2}", enableRTL, enableMusic, enableSFX);
     }
 }
