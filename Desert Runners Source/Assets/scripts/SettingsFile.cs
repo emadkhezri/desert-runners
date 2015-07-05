@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO;
 
-public class SettingsFile : MonoBehaviour
+public class SettingsFile
 {
     public bool enableRTL = false;
     public bool enableMusic = true;

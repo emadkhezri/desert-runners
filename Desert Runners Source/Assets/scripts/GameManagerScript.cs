@@ -54,6 +54,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     private GameObject pauseButton;
     private GameObject pausePanel;
     public GameObject hiscoresPanel;
+    public GameObject prefabCountDown;
 
     void Start()
     {
@@ -109,6 +110,8 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         
         //hiscoresPanel = GameObject.Find("HiscoresPanel");
         hideHiscoresPanel();
+        
+        //prefabCountDown = GameObject.Find("prefabCountDown");
         //
         screenFader = GameObject.Find("ScreenFader").GetComponent<ScreenFader>();
         isGameStopped = true;
@@ -351,6 +354,22 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     public void onFadeInDone()
     {
+        StartCoroutine(startCountDown());
+    }
+    
+    private IEnumerator startCountDown()
+    {
+        Sprite[] numberSprites = Resources.LoadAll<Sprite>("Numbers");
+        GameObject countDownImage;
+        for (int i=numberSprites.Length; i>0; --i)
+        {
+            prefabCountDown.GetComponent<SpriteRenderer>().sprite = numberSprites [i - 1];
+            countDownImage = Instantiate(prefabCountDown);
+            countDownImage.transform.position = new Vector3(0, 0, 0);
+            yield return new WaitForSeconds(1);
+            Destroy(countDownImage);
+        }
+        
         scoreText.SetActive(true);
         pauseButton.SetActive(true);
         this.isGameStopped = false;
