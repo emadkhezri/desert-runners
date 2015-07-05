@@ -321,6 +321,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     private IEnumerator showGameOverMenu()
     {
+        pauseButton.SetActive(false);
         yield return new WaitForSeconds(.5f);
         gameOverCanvasRef.SetActive(true);
         
@@ -441,6 +442,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     public void pauseGame()
     {
+        pauseButton.SetActive(false);
         backGroundMusic.Pause();
         isGameStopped = true;
         showPausePanel();
@@ -449,6 +451,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     public void resumeGame()
     {
+        pauseButton.SetActive(true);
         backGroundMusic.UnPause();
         hidePausePanel();
         isGameStopped = false;

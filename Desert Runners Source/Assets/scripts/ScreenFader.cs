@@ -62,6 +62,7 @@ public class ScreenFader : MonoBehaviour
     
     public void FadeOut(IFaderListener listener, string param)
     {
+        Time.timeScale = 1;
         //moveIntoSight();
         this.listenerParam = param;
         //fadeProgress = 0;
