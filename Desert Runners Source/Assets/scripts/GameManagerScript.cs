@@ -50,6 +50,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     private GameObject scoreText;
     private GameObject pauseButton;
     private GameObject pausePanel;
+    public GameObject hiscoresPanel;
     
     //SFX
     private AudioSource backGroundMusic;
@@ -102,6 +103,9 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         
         pausePanel = GameObject.Find("PausePanel");
         hidePausePanel();
+        
+        //hiscoresPanel = GameObject.Find("HiscoresPanel");
+        hideHiscoresPanel();
         //SFX
         backGroundMusic = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
         //
@@ -351,6 +355,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     public void submitHighscore()
     {
+        showHiscoresPanel();
         string playerName = GameObject.Find("PlayerNameInput").GetComponent<UnityEngine.UI.InputField>().text;
         GameObject.Find("SubmitBtn").SetActive(false);
         GameObject.Find("PlayerNameInput").SetActive(false);
@@ -466,5 +471,15 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     public void showPausePanel()
     {
         pausePanel.SetActive(true);
+    } 
+    
+    public void hideHiscoresPanel()
+    {
+        hiscoresPanel.SetActive(false);
+    }
+    
+    public void showHiscoresPanel()
+    {
+        hiscoresPanel.SetActive(true);
     } 
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class HighScoreController : MonoBehaviour
 {
     public Text scoreText;
-    
+    //
     private string secretKey = "atomerz09197046879"; // Edit this value and make sure it's the same as the one stored on the server
     private string addScoreURL = "http://narmgeek.ir/addscore.php?"; //be sure to add a ? to your url
     private string highscoreURL = "http://narmgeek.ir/display.php";
@@ -48,16 +48,16 @@ public class HighScoreController : MonoBehaviour
         {
             print("There was an error posting the high score: " + hs_post.error);
             scoreText.text = "Submitting score failed.";
+        } else
+        {
+            scoreText.text = hs_post.text; // this is a GUIText that will display the scores in game.
         }
-        
-        StartCoroutine(GetScores());
     }
     
     // Get the scores from the MySQL DB to display in a GUIText.
     // remember to use StartCoroutine when calling this function!
     public IEnumerator GetScores()
     {
-        print(scoreText.name);
         scoreText.text = "Getting Hiscores...";
         WWW hs_get = new WWW(highscoreURL);
         yield return hs_get;
