@@ -24,14 +24,14 @@ public class SceneManager : MonoBehaviour, IFaderListener
         {
             settingsFile = new SettingsFile(Path.Combine(Application.persistentDataPath, "settings.dat"));
             settingsFile.load();
-            chkRTL.isOn = settingsFile.enableRTL;
-            chkBackgroundMusic.isOn = settingsFile.enableMusic;
-            chkSoundEffects.isOn = settingsFile.enableSFX;
             
         } catch (System.Exception ex)
         {
             print("Failed to load settings. ex= " + ex.Message);
         }
+        chkRTL.isOn = settingsFile.enableRTL;
+        chkBackgroundMusic.isOn = settingsFile.enableMusic;
+        chkSoundEffects.isOn = settingsFile.enableSFX;  
         
         settingsPanel = GameObject.Find("SettingsPanel");
         hiscoresPanel = GameObject.Find("HiscoresPanel");

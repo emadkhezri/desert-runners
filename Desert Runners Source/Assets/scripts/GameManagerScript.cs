@@ -359,16 +359,14 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     
     private IEnumerator startCountDown()
     {
-        Sprite[] numberSprites = Resources.LoadAll<Sprite>("Numbers");
-        GameObject countDownImage;
-        for (int i=numberSprites.Length; i>0; --i)
+        Texture[] numberTextures = Resources.LoadAll<Texture>("Numbers");
+        GameObject countDownImage = GameObject.Find("CountDownImage");
+        for (int i=numberTextures.Length; i>0; --i)
         {
-            prefabCountDown.GetComponent<SpriteRenderer>().sprite = numberSprites [i - 1];
-            countDownImage = Instantiate(prefabCountDown);
-            countDownImage.transform.position = new Vector3(0, 0, 0);
+            countDownImage.GetComponent<UnityEngine.UI.RawImage>().texture = numberTextures [i - 1];
             yield return new WaitForSeconds(1);
-            Destroy(countDownImage);
         }
+        countDownImage.SetActive(false);
         
         scoreText.SetActive(true);
         pauseButton.SetActive(true);
@@ -377,8 +375,11 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     public void submitHighscore()
     {
-        showHiscoresPanel();
         string playerName = GameObject.Find("PlayerNameInput").GetComponent<UnityEngine.UI.InputField>().text;
+        if (playerName.Trim() == string.Empty)
+            return;
+        
+        showHiscoresPanel();
         GameObject.Find("SubmitBtn").SetActive(false);
         GameObject.Find("PlayerNameInput").SetActive(false);
         HighScoreController hsController = GameObject.Find("HighScoreController").GetComponent<HighScoreController>();
