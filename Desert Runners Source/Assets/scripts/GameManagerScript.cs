@@ -58,6 +58,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
 
     void Start()
     {
+        print(Application.persistentDataPath);
         Screen.fullScreen = true;
         //Time.timeScale = 1;
         
