@@ -22,9 +22,8 @@ public class SceneManager : MonoBehaviour, IFaderListener
         
         try
         {
-            settingsFile = new SettingsFile("settings.dat");
+            settingsFile = new SettingsFile(Path.Combine(Application.persistentDataPath, "settings.dat"));
             settingsFile.load();
-            print(settingsFile.ToString());
             chkRTL.isOn = settingsFile.enableRTL;
             chkBackgroundMusic.isOn = settingsFile.enableMusic;
             chkSoundEffects.isOn = settingsFile.enableSFX;
