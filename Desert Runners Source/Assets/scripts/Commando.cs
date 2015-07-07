@@ -31,7 +31,7 @@ public class Commando : MonoBehaviour
                 movementParams.isMoving = false;
         }
         
-        GetComponent<Animator>().speed = gameManager.GetComponent<GameManagerScript>().CurrentMovementSpeed / 300f;
+        GetComponent<Animator>().speed = gameManager.GetComponent<GameManagerScript>().CurrentMovementSpeed / 500f;
     }
     
     void OnTriggerEnter2D(Collider2D col)

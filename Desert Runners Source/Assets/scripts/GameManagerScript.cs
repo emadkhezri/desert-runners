@@ -32,7 +32,7 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     }
     
     //private fields
-    private const float InitialSpeed = 150;
+    private const float InitialSpeed = 300;
     private float currentSpeed = InitialSpeed;
     private float LANE_WIDTH = 100;
     private float lanesStartY; // read from gameobject
@@ -123,7 +123,10 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
     {
         if (isGameStopped)
             return;
-
+        
+        currentSpeed = InitialSpeed + Mathf.Sqrt(2 * distanceTraveled);
+        print("current speed: " + currentSpeed);
+        
         float translation = Time.deltaTime * currentSpeed;
         distanceTraveled += translation;
 
@@ -299,8 +302,6 @@ public class GameManagerScript : MonoBehaviour, IFaderListener
         else if (lastGeneratedObstacleId < 30)
             OBSTACLE_COUNT = 3;
 
-        currentSpeed = InitialSpeed + Mathf.Sqrt(2 * distanceTraveled);
-        print("current speed: " + currentSpeed);
         // generate
         List<GameObject> currentList = new List<GameObject>();
         for (int i=0; i<Random.Range(Mathf.Max(1,OBSTACLE_COUNT-1), OBSTACLE_COUNT+1); i++)
